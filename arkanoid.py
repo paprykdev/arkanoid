@@ -30,7 +30,7 @@ class Ball:
         self.width = width
         self.x = width // 2
         self.y = height // 2
-        self.dx = 1
+        self.dx = 0
         self.dy = 1
 
     def draw(self):
@@ -148,7 +148,16 @@ def main(stdscr):
 
         end_game(score, window, height, width)
     except KeyboardInterrupt:
-        main(stdscr)
+        try:
+            for timer in range(2, 0, -1):
+                string = f"Restarting in {timer}.."
+                window.clear()
+                window.addstr(height // 2, width // 2 - len(string) // 2, string)
+                window.refresh()
+                curses.napms(1000)
+            main(stdscr)
+        except KeyboardInterrupt:
+            pass
 
 
 if __name__ == "__main__":
