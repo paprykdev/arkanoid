@@ -1,5 +1,5 @@
 # Arkanoid
-# Tested on Arch linux
+> Tested on Arch linux
 
 ## Description
 
