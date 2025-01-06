@@ -7,20 +7,20 @@ class Paddle:
         self.window = window
         self.height = height
         self.width = width
-        self.x = self.width // 2 - 3
+        self.x = width // 2 - 5
         self.y = self.height - 1
         self.paddle_width = 10
 
     def draw(self):
-        self.window.addstr(self.y, self.x, "#########")
+        self.window.addstr(self.y, self.x, "===========")
 
     def move_left(self):
         if self.x > 0:
-            self.x -= 2
+            self.x -= 1
 
     def move_right(self):
-        if self.x < self.width - self.paddle_width:
-            self.x += 2
+        if self.x < self.width - self.paddle_width - 2:
+            self.x += 1
 
 
 class Ball:
@@ -62,11 +62,9 @@ class Brick:
         self.x = j * 3 - 1
         self.y = i
         self.width = 3
-        self.random = random.randint(0, 1)
 
     def draw(self):
-        if self.random:
-            self.window.addstr(self.y, self.x, "###")
+        self.window.addstr(self.y, self.x, "###")
 
 
 def end_game(score, window, height, width):
@@ -76,6 +74,7 @@ def end_game(score, window, height, width):
     window.addstr(height // 2 + 3, width // 2 - 10, "Press any key to exit")
     window.addstr(height // 2 + 4, width // 2 - 10, "or Ctrl+C to restart")
     window.refresh()
+    curses.napms(500)
     while True:
         key = window.getch()
         if key != -1:
@@ -103,9 +102,10 @@ def main(stdscr):
         score = 0
 
         bricks = []
-        for i in range(1, 10):
+        for i in range(1, random.randint(5, 15)):
             for j in range(1, width // 3):
-                bricks.append(Brick(window, i, j))
+                if random.randint(0, 1):
+                    bricks.append(Brick(window, i, j))
 
         while True:
             key = window.getch()
@@ -129,8 +129,9 @@ def main(stdscr):
                     break
 
             for brick in bricks:
-                if ball.y == brick.y and ball.x >= brick.x and \
-                        ball.x < brick.x + brick.width:
+                if ball.y + ball.dy == brick.y and\
+                        ball.x + ball.dx >= brick.x and \
+                        ball.x + ball.dx < brick.x + brick.width:
                     bricks.remove(brick)
                     score += 10
                     ball.bounce()
