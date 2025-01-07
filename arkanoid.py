@@ -74,10 +74,9 @@ def end_game(score, window, height, width):
     window.addstr(height // 2 + 3, width // 2 - 10, "Press any key to exit")
     window.addstr(height // 2 + 4, width // 2 - 10, "or Ctrl+C to restart")
     window.refresh()
-    curses.napms(500)
     while True:
         key = window.getch()
-        if key != -1:
+        if key != -1 and key != curses.KEY_LEFT and key != curses.KEY_RIGHT:
             break
     window.clear()
     window.refresh()
@@ -117,8 +116,8 @@ def main(stdscr):
             ball.move()
 
             if ball.y == height - 2:
-                cond1 = ball.x >= paddle.x
                 cond2 = ball.x < paddle.x + paddle.paddle_width // 2
+                cond1 = ball.x >= paddle.x
                 cond3 = ball.x >= paddle.x + paddle.paddle_width // 2
                 cond4 = ball.x < paddle.x + paddle.paddle_width
                 if cond1 and cond2:
@@ -129,9 +128,9 @@ def main(stdscr):
                     break
 
             for brick in bricks:
-                if ball.y + ball.dy == brick.y and\
-                        ball.x + ball.dx >= brick.x and \
-                        ball.x + ball.dx < brick.x + brick.width:
+                if ball.y == brick.y and\
+                        ball.x >= brick.x and \
+                        ball.x < brick.x + brick.width:
                     bricks.remove(brick)
                     score += 10
                     ball.bounce()
