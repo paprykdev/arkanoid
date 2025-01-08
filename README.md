@@ -1,6 +1,9 @@
 # Arkanoid
 > Tested on Linux
 
+## Author
+Patryk Ilkiw
+
 ## Description
 
 This is a simple Arkanoid game made in Python in terminal.
